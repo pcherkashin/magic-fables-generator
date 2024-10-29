@@ -8,8 +8,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const voices = ['Soft', 'Energetic', 'Robotic', 'Magical']
-const lengths = ['Short (5 mins)', 'Medium (10 mins)', 'Long (20 mins)']
+const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
+const lengths = ['Short (3 mins)', 'Medium (5 mins)', 'Long (10 mins)']
 const styles = ['Adventurous', 'Magical', 'Educational', 'Funny']
 
 export default function StoryOptions({
@@ -29,7 +29,8 @@ export default function StoryOptions({
         <SelectContent>
           {voices.map((voice) => (
             <SelectItem key={voice} value={voice}>
-              {voice}
+              {voice.charAt(0).toUpperCase() + voice.slice(1)}{' '}
+              {/* Capitalize the first letter */}
             </SelectItem>
           ))}
         </SelectContent>

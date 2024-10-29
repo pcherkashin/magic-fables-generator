@@ -12,12 +12,12 @@ export default function StoryInput({
   onGenerate,
 }) {
   const [storyPrompt, setStoryPrompt] = useState('')
-  const [voice, setVoice] = useState('Soft')
-  const [length, setLength] = useState('Short (5 mins)')
+  const [voice, setVoice] = useState('alloy') // Default to 'alloy' or any other supported voice
+  const [length, setLength] = useState('Short (3 mins)')
   const [style, setStyle] = useState('Adventurous')
 
   const handleGenerateClick = () => {
-    onGenerate(storyPrompt, voice, length, style)
+    onGenerate(storyPrompt, voice, length, style) // Pass selected voice to the onGenerate function
   }
 
   return (
