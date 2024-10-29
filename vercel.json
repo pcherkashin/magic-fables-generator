@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/generate-story.js": {
+      "maxDuration": 300
+    },
+    "api/generate-tts.js": {
+      "maxDuration": 300
+    }
+  }
+}
