@@ -12,16 +12,15 @@ export default function StoryInput({
   onGenerate,
 }) {
   const [storyPrompt, setStoryPrompt] = useState('')
-  const [voice, setVoice] = useState('alloy') // Default to 'alloy' or any other supported voice
+  const [voice, setVoice] = useState('alloy')
   const [length, setLength] = useState('Short (3 mins)')
   const [style, setStyle] = useState('Adventurous')
   const [isProcessing, setIsProcessing] = useState(false)
-
   const mediaRecorderRef = useRef(null)
   let audioChunks = []
 
   const handleGenerateClick = () => {
-    onGenerate(storyPrompt, voice, length, style) // Pass selected voice to the onGenerate function
+    onGenerate(storyPrompt, voice, length, style)
   }
 
   const handleRecording = () => {
@@ -38,7 +37,6 @@ export default function StoryInput({
 
   const startWebRecording = () => {
     setIsRecording(true)
-    setIsProcessing(false) // Reset processing state at start
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
@@ -60,14 +58,13 @@ export default function StoryInput({
         }
       })
       .catch((error) => {
-        console.error('Error starting web recording:', error)
+        console.error('Error during web recording:', error)
         setIsProcessing(false)
       })
   }
 
   const startMobileRecording = () => {
     setIsRecording(true)
-    setIsProcessing(false)
     const mimeType = 'audio/mp4'
 
     navigator.mediaDevices
@@ -91,7 +88,7 @@ export default function StoryInput({
         }
       })
       .catch((error) => {
-        console.error('Error starting mobile recording:', error)
+        console.error('Error during mobile recording:', error)
         setIsProcessing(false)
       })
   }
@@ -105,8 +102,7 @@ export default function StoryInput({
 
   const handleTranscription = async (audioBlob) => {
     try {
-      setIsProcessing(true) // Set to transcribing state
-
+      setIsProcessing(true)
       const formData = new FormData()
       const fileType = audioBlob.type.includes('mp4')
         ? 'audio/mp4'
@@ -117,7 +113,7 @@ export default function StoryInput({
           type: fileType,
         })
       )
-      formData.append('model', 'whisper-1') // Whisper model for transcription
+      formData.append('model', 'whisper-1')
 
       const response = await fetch('/api/transcribe', {
         method: 'POST',
@@ -131,13 +127,12 @@ export default function StoryInput({
 
       const data = await response.json()
       const transcription = data.text
-      setStoryPrompt(transcription) // Update storyPrompt with transcription result
-      console.log('Transcription:', transcription)
+      setStoryPrompt(transcription)
     } catch (error) {
       console.error('Error during transcription:', error)
     } finally {
-      setIsProcessing(false) // Ensure "Voice Input" button label resets
-      setIsRecording(false) // Reset to default button state
+      setIsProcessing(false)
+      setIsRecording(false)
     }
   }
 

@@ -12,7 +12,6 @@ export async function POST(request) {
   }
 
   try {
-    // Extract variables from the request body
     const { storyPrompt, voice, length, style } = await request.json()
     console.log('Request received with the following parameters:', {
       storyPrompt,
@@ -45,10 +44,9 @@ export async function POST(request) {
       `,
     }
 
-    // Use the selected style's block, defaulting to an empty string if style is not found
     const styleSpecificBlock = styleBlocks[style] || ''
 
-    // Create a dynamic system prompt
+    // Create dynamic system prompt
     const systemPrompt = `
       <role> You are a **magical fairy tale generator** designed to craft creative, dynamic, and emotionally rich stories for two children aged 7 and 9. Your stories should entertain while helping them develop emotional intelligence, communication skills, and analytical thinking. Each tale should be an exciting adventure that leads to valuable life lessons. </role>
 
