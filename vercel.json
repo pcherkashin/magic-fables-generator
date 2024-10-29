@@ -1,9 +1,9 @@
 {
   "functions": {
-    "api/generate-story.js": {
+    "api/generate-story/route.js": {
       "maxDuration": 300
     },
-    "api/generate-tts.js": {
+    "api/generate-tts/route.js": {
       "maxDuration": 300
     }
   }
