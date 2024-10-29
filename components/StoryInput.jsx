@@ -108,9 +108,14 @@ export default function StoryInput({
       setIsProcessing(true) // Set to transcribing state
 
       const formData = new FormData()
+      const fileType = audioBlob.type.includes('mp4')
+        ? 'audio/mp4'
+        : 'audio/webm'
       formData.append(
         'file',
-        new File([audioBlob], 'recording.webm', { type: audioBlob.type })
+        new File([audioBlob], `recording.${fileType.split('/')[1]}`, {
+          type: fileType,
+        })
       )
       formData.append('model', 'whisper-1') // Whisper model for transcription
 
@@ -126,12 +131,8 @@ export default function StoryInput({
 
       const data = await response.json()
       const transcription = data.text
-
-      // Add a slight delay for mobile devices to ensure proper update
-      setTimeout(() => {
-        setStoryPrompt(transcription) // Update storyPrompt with transcription result
-        console.log('Transcription:', transcription)
-      }, 100) // Adjust delay if needed
+      setStoryPrompt(transcription) // Update storyPrompt with transcription result
+      console.log('Transcription:', transcription)
     } catch (error) {
       console.error('Error during transcription:', error)
     } finally {
