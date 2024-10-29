@@ -12,15 +12,13 @@ export async function POST(request) {
   }
 
   try {
-    const { storyPrompt, voice, length, style } = await request.json()
-    console.log('Request received with the following parameters:', {
+    const { storyPrompt, length, style } = await request.json()
+    console.log('Request received for story generation:', {
       storyPrompt,
-      voice,
       length,
       style,
     })
 
-    // Define style-specific blocks
     const styleBlocks = {
       Adventurous: `
         - **Energy and Pace**: Focus on a fast-paced, thrilling storyline with plenty of action, danger, and excitement. The story should take the children on a high-stakes journey through unknown lands or challenging quests.
@@ -46,7 +44,6 @@ export async function POST(request) {
 
     const styleSpecificBlock = styleBlocks[style] || ''
 
-    // Create dynamic system prompt
     const systemPrompt = `
       <role> You are a **magical fairy tale generator** designed to craft creative, dynamic, and emotionally rich stories for two children aged 7 and 9. Your stories should entertain while helping them develop emotional intelligence, communication skills, and analytical thinking. Each tale should be an exciting adventure that leads to valuable life lessons. </role>
 
@@ -82,7 +79,6 @@ export async function POST(request) {
       <output_format> Provide only the fairy tale as output, with no additional comments or explanations. </output_format>
     `
 
-    // Step 1: Generate story text using Chat Completion
     const storyResponse = await fetch(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -118,46 +114,10 @@ export async function POST(request) {
 
     const storyData = await storyResponse.json()
     const storyText = storyData.choices[0].message.content
-    console.log('Story text generated:', storyText)
 
-    // Step 2: Convert story text to audio using TTS
-    const audioResponse = await fetch(
-      'https://api.openai.com/v1/audio/speech',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${openAiApiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'tts-1',
-          input: storyText,
-          voice: voice,
-          response_format: 'mp3',
-          speed: 1.0,
-        }),
-      }
-    )
-
-    if (!audioResponse.ok) {
-      console.error(
-        'Error generating audio from OpenAI:',
-        audioResponse.statusText
-      )
-      throw new Error('Failed to generate audio from OpenAI')
-    }
-
-    // Get the audio content
-    const audioBuffer = await audioResponse.arrayBuffer()
-    console.log('Audio generated successfully')
-
-    // Return both the story text and audio as a base64 string
     return NextResponse.json({
       title: storyPrompt,
       story: storyText,
-      audio: `data:audio/mp3;base64,${Buffer.from(audioBuffer).toString(
-        'base64'
-      )}`,
     })
   } catch (error) {
     console.error('Error generating story:', error)

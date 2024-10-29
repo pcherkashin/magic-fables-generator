@@ -18,22 +18,45 @@ export default function MagicFablesPage() {
     setIsGenerating(true)
 
     try {
-      const response = await fetch('/api/generate-story', {
+      // Step 1: Generate the story text
+      const storyResponse = await fetch('/api/generate-story', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ storyPrompt, voice, length, style }),
+        body: JSON.stringify({ storyPrompt, length, style }),
       })
 
-      const data = await response.json()
+      const storyData = await storyResponse.json()
 
-      // Set generated story and ensure `voice`, `length`, and `style` are included in `stories`
-      setGeneratedStory({ title: data.title, audioUrl: data.audio })
+      if (!storyResponse.ok || !storyData.story) {
+        throw new Error('Failed to generate story text.')
+      }
+
+      // Step 2: Generate the TTS audio for the story
+      const ttsResponse = await fetch('/api/generate-tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ storyText: storyData.story, voice }),
+      })
+
+      const ttsData = await ttsResponse.json()
+
+      if (!ttsResponse.ok || !ttsData.audio) {
+        throw new Error('Failed to generate TTS audio.')
+      }
+
+      // Set generated story and include all relevant details in `stories`
+      setGeneratedStory({
+        title: storyPrompt,
+        story: storyData.story,
+        audioUrl: ttsData.audio,
+      })
       setStories([
         ...stories,
         {
           id: stories.length + 1,
-          title: data.title,
-          audioUrl: data.audio,
+          title: storyPrompt,
+          story: storyData.story,
+          audioUrl: ttsData.audio,
           voice,
           length,
           style,
