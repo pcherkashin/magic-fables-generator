@@ -126,8 +126,12 @@ export default function StoryInput({
 
       const data = await response.json()
       const transcription = data.text
-      setStoryPrompt(transcription) // Update storyPrompt with transcription result
-      console.log('Transcription:', transcription)
+
+      // Add a slight delay for mobile devices to ensure proper update
+      setTimeout(() => {
+        setStoryPrompt(transcription) // Update storyPrompt with transcription result
+        console.log('Transcription:', transcription)
+      }, 100) // Adjust delay if needed
     } catch (error) {
       console.error('Error during transcription:', error)
     } finally {
