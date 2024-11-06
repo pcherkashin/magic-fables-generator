@@ -20,7 +20,7 @@ const languages = [
   'German',
   'Arabic',
   'Chinese',
-] 
+]
 
 export default function StoryOptions({
   voice,
