@@ -11,7 +11,16 @@ import {
 const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
 const lengths = ['Short (3 mins)', 'Medium (5 mins)', 'Long (10 mins)']
 const styles = ['Adventurous', 'Magical', 'Educational', 'Funny']
-const languages = ['English', 'Ukrainian'] // Add other languages as needed
+const languages = [
+  'English',
+  'Ukrainian',
+  'Italian',
+  'Spanish',
+  'French',
+  'German',
+  'Arabic',
+  'Chinese',
+] 
 
 export default function StoryOptions({
   voice,
