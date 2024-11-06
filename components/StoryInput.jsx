@@ -16,11 +16,12 @@ export default function StoryInput({
   const [length, setLength] = useState('Short (3 mins)')
   const [style, setStyle] = useState('Adventurous')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [language, setLanguage] = useState('English')
   const mediaRecorderRef = useRef(null)
   let audioChunks = []
 
   const handleGenerateClick = () => {
-    onGenerate(storyPrompt, voice, length, style)
+    onGenerate(storyPrompt, voice, length, style, language)
   }
 
   const handleRecording = () => {
@@ -170,6 +171,8 @@ export default function StoryInput({
         setLength={setLength}
         style={style}
         setStyle={setStyle}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       <Button

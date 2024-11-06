@@ -11,6 +11,7 @@ import {
 const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
 const lengths = ['Short (3 mins)', 'Medium (5 mins)', 'Long (10 mins)']
 const styles = ['Adventurous', 'Magical', 'Educational', 'Funny']
+const languages = ['English', 'Ukrainian'] // Add other languages as needed
 
 export default function StoryOptions({
   voice,
@@ -19,9 +20,13 @@ export default function StoryOptions({
   setLength,
   style,
   setStyle,
+  language,
+  setLanguage, // Add this prop
 }) {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6'>
+    <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6'>
+      {' '}
+      {/* Updated grid-cols */}
       <Select onValueChange={setVoice} value={voice}>
         <SelectTrigger className='rounded-full'>
           <SelectValue placeholder='Select voice' />
@@ -30,12 +35,10 @@ export default function StoryOptions({
           {voices.map((voice) => (
             <SelectItem key={voice} value={voice}>
               {voice.charAt(0).toUpperCase() + voice.slice(1)}{' '}
-              {/* Capitalize the first letter */}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-
       <Select onValueChange={setLength} value={length}>
         <SelectTrigger className='rounded-full'>
           <SelectValue placeholder='Select length' />
@@ -48,7 +51,6 @@ export default function StoryOptions({
           ))}
         </SelectContent>
       </Select>
-
       <Select onValueChange={setStyle} value={style}>
         <SelectTrigger className='rounded-full'>
           <SelectValue placeholder='Select style' />
@@ -57,6 +59,20 @@ export default function StoryOptions({
           {styles.map((style) => (
             <SelectItem key={style} value={style}>
               {style}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select onValueChange={setLanguage} value={language}>
+        {' '}
+        {/* New language select */}
+        <SelectTrigger className='rounded-full'>
+          <SelectValue placeholder='Select language' />
+        </SelectTrigger>
+        <SelectContent>
+          {languages.map((lang) => (
+            <SelectItem key={lang} value={lang}>
+              {lang}
             </SelectItem>
           ))}
         </SelectContent>

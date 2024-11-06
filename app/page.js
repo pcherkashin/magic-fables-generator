@@ -14,7 +14,13 @@ export default function MagicFablesPage() {
   const [stories, setStories] = useState([]) // Previously generated stories
   const [currentPage, setCurrentPage] = useState(1)
 
-  const handleGenerateStory = async (storyPrompt, voice, length, style) => {
+  const handleGenerateStory = async (
+    storyPrompt,
+    voice,
+    length,
+    style,
+    language
+  ) => {
     setIsGenerating(true)
 
     try {
@@ -22,7 +28,7 @@ export default function MagicFablesPage() {
       const storyResponse = await fetch('/api/generate-story', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ storyPrompt, length, style }),
+        body: JSON.stringify({ storyPrompt, length, style, language }),
       })
 
       const storyData = await storyResponse.json()

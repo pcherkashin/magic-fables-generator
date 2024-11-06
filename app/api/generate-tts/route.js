@@ -12,7 +12,7 @@ export async function POST(request) {
   }
 
   try {
-    const { storyText, voice } = await request.json()
+    const { storyText, voice, language } = await request.json()
     console.log('Request received for TTS generation:', { storyText, voice })
 
     const audioResponse = await fetch(
@@ -27,6 +27,7 @@ export async function POST(request) {
           model: 'tts-1',
           input: storyText,
           voice: voice,
+          language: language,
           response_format: 'mp3',
           speed: 1.0,
         }),

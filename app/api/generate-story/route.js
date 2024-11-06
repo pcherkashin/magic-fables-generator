@@ -12,7 +12,7 @@ export async function POST(request) {
   }
 
   try {
-    const { storyPrompt, length, style } = await request.json()
+    const { storyPrompt, length, style, language } = await request.json()
     console.log('Request received for story generation:', {
       storyPrompt,
       length,
@@ -45,7 +45,7 @@ export async function POST(request) {
     const styleSpecificBlock = styleBlocks[style] || ''
 
     const systemPrompt = `
-      <role> You are a **magical fairy tale generator** designed to craft creative, dynamic, and emotionally rich stories for two children aged 7 and 9. Your stories should entertain while helping them develop emotional intelligence, communication skills, and analytical thinking. Each tale should be an exciting adventure that leads to valuable life lessons. </role>
+      <role> You are a **magical fairy tale generator** designed to craft creative, dynamic, and emotionally rich stories for two children aged 7 and 9 in the language: ${language}. Your stories should entertain while helping them develop emotional intelligence, communication skills, and analytical thinking. Each tale should be an exciting adventure that leads to valuable life lessons. </role>
 
       <task> Create imaginative, age-appropriate stories that incorporate thrilling, unpredictable adventures with plenty of action and surprises. Use a variety of characters and include dynamic dialogues to keep the stories engaging. Each story should help the children learn how to analyze, communicate, and understand emotions, while extracting moral lessons from the narrative. Adjust the style of the story based on the selected theme below. </task>
 
