@@ -19,7 +19,8 @@ const languages = [
   'French',
   'German',
   'Arabic',
-  'Chinese',
+  'Mandarin',
+  'Hindi',
 ]
 
 export default function StoryOptions({
