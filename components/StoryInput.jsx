@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Mic } from 'lucide-react'
@@ -17,8 +17,13 @@ export default function StoryInput({
   const [style, setStyle] = useState('Adventurous')
   const [isProcessing, setIsProcessing] = useState(false)
   const [language, setLanguage] = useState('English')
+  const [isMobile, setIsMobile] = useState(false) // Add a new state for device type
   const mediaRecorderRef = useRef(null)
   let audioChunks = []
+
+  useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent))
+  }, [])
 
   const handleGenerateClick = () => {
     onGenerate(storyPrompt, voice, length, style, language)
@@ -28,7 +33,7 @@ export default function StoryInput({
     if (isRecording) {
       stopRecording()
     } else {
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      if (isMobile) {
         startMobileRecording()
       } else {
         startWebRecording()
@@ -148,16 +153,19 @@ export default function StoryInput({
             className='rounded-full'
           />
         </div>
-        <Button
-          onClick={handleRecording}
-          className={`rounded-full ${
-            isRecording
-              ? 'bg-red-500 hover:bg-red-600'
-              : 'bg-blue-500 hover:bg-blue-600'
-          }`}>
-          <Mic className='mr-2 h-4 w-4' />
-          {isProcessing ? 'Transcribing...' : 'Voice Input'}
-        </Button>
+        {/* Conditionally render the Voice Input button for non-mobile devices */}
+        {!isMobile && (
+          <Button
+            onClick={handleRecording}
+            className={`rounded-full ${
+              isRecording
+                ? 'bg-red-500 hover:bg-red-600'
+                : 'bg-blue-500 hover:bg-blue-600'
+            }`}>
+            <Mic className='mr-2 h-4 w-4' />
+            {isProcessing ? 'Transcribing...' : 'Voice Input'}
+          </Button>
+        )}
       </div>
 
       {isProcessing && (
