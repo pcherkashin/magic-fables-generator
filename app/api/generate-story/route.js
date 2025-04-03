@@ -94,11 +94,11 @@ export async function POST(request) {
             { role: 'user', content: `Generate a story. "${storyPrompt}"` },
           ],
           max_tokens:
-            length === 'Short (3 mins)'
+            length === 'Short (~1.5 min)'
               ? 2000
-              : length === 'Medium (5 mins)'
+              : length === 'Medium (~3 min)'
               ? 4000
-              : 8000,
+              : 6000,
           temperature: 0.9,
         }),
       }
